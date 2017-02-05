@@ -47,6 +47,54 @@ static void help(void)
 		"  If provided, FIRST and LAST limit the probing range.\n");
 }
 
+static int i2c_read_byte(int file,  unsigned char device_addr)
+{   
+    int i;  
+    struct i2c_rdwr_ioctl_data msg_rdwr;    
+    char byte;
+    struct i2c_msg msgs[] = {   
+        {
+            .addr       = device_addr,
+            .flags      = I2C_M_RD,
+            .len        = 1,
+            .buf        = &byte,
+        }
+    };                                                                                                   
+
+    msg_rdwr.msgs = msgs;   
+    msg_rdwr.nmsgs = 1; 
+    if((i = ioctl(file, I2C_RDWR, &msg_rdwr)) < 0){
+        //    perror("ioctl()");
+        return -1;
+    }
+
+    return 0;
+}
+
+static int i2c_write_byte(int file,  unsigned char device_addr)
+{   
+    int i;  
+    struct i2c_rdwr_ioctl_data msg_rdwr;    
+    char byte;
+    struct i2c_msg msgs[] = {   
+        {
+            .addr       = device_addr,
+            .flags      = 0,
+            .len        = 1,
+            .buf        = &byte,
+        }
+    };                                                                                                   
+
+    msg_rdwr.msgs = msgs;   
+    msg_rdwr.nmsgs = 1; 
+    if((i = ioctl(file, I2C_RDWR, &msg_rdwr)) < 0){
+        //    perror("ioctl()");
+        return -1;
+    }
+
+    return 0;
+}
+
 static int scan_i2c_bus(int file, int mode, unsigned long funcs,
 			int first, int last)
 {
@@ -109,6 +157,8 @@ static int scan_i2c_bus(int file, int mode, unsigned long funcs,
 				/* This is known to lock SMBus on various
 				   write-only chips (mainly clock chips) */
 				res = i2c_smbus_read_byte(file);
+				//res = i2c_read_byte(file, i+j);
+				//res = i2c_write_byte(file, i+j);
 				break;
 			}
 

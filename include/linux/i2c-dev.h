@@ -68,5 +68,6 @@ struct i2c_rdwr_ioctl_data {
 
 #define  I2C_RDRW_IOCTL_MAX_MSGS	42
 
+#define I2C_FUNC_SMBUS_PEC I2C_FUNC_SMBUS_HWPEC_CALC
 
 #endif /* _LINUX_I2C_DEV_H */

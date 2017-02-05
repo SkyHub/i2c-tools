@@ -23,16 +23,18 @@ INSTALL_PROGRAM	:= $(INSTALL) -m 755
 LN		:= ln -sf
 RM		:= rm -f
 
-CC	?= gcc
-AR	?= ar
+#CC	?= gcc
+#AR	?= ar
 
+CC	= /opt/cross/android/bin/arm-linux-androideabi-gcc
+AR	= /opt/cross/android/bin/arm-linux-androideabi-ar
 CFLAGS		?= -O2
 # When debugging, use the following instead
 #CFLAGS		:= -O -g
 CFLAGS		+= -Wall
 SOCFLAGS	:= -fpic -D_REENTRANT $(CFLAGS)
 
-USE_STATIC_LIB ?= 0
+USE_STATIC_LIB ?= 1
 BUILD_STATIC_LIB ?= 1
 ifeq ($(USE_STATIC_LIB),1)
 BUILD_STATIC_LIB := 1
